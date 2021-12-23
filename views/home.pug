@@ -1,0 +1,63 @@
+extends layout
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.nav(style='background-color: #24292f !important;')
+        .container-fluid(style="padding: 12px 24px;")
+            a(class="navbar-brand" href="#") 
+                //- img(src='https://cdn-icons-png.flaticon.com/512/25/25231.png' alt='logo' style="width: 30px;")
+                img(src='https://icon-library.com/images/github-icon-white/github-icon-white-6.jpg' style="width: 35px;")
+            div(class="collapse navbar-collapse" id="navbarNavAltMarkup")
+                div(class="navbar-nav")
+                    input#example-search-input.form-control.py-2.navSearch(type='text' placeholder='Search or jump to...')
+                    a(class="nav-link" href="#" style='color:white;') Pulls
+                    a(class="nav-link" href="#" style='color:white;') Issues 
+                    a(class="nav-link" href="#" style='color:white;') Marketplace
+                    a(class="nav-link" href="#" style='color:white;') Explore
+    div(style='background-color:#f6f8fa;')
+        div.container
+            div.row
+                div.col(style='margin-top: 20px;')
+                    a.projTitle Project_Name 
+        div.row.tabs
+            .col-sm.issueTab
+                i.far.fa-code-commit
+                p Issues
+        hr(style='margin-top: 0px;')
+
+    div.col-sm-11(style='display: flex; margin: auto; margin-top: 30px; justify-content: space-between; align-items: baseline;')
+        div
+            input(type='text' placeholder='Search')(style='width: 930px; height: 40px; background-color: #f6f8fa; border: 1px solid #d0d7de; border-radius: 5px;')
+        div
+            div
+                button.p-2(style='border: 1px solid #d0d7de; background-color: transparent; border-radius: 5px 0 0 5px;')
+                    i.fas.fa-tag(style='margin-right: 5px;')
+                    | Labels 0
+                button.p-2(style='border: 1px solid #d0d7de; background-color: transparent; border-radius: 0 5px 5px 0') Milestones 0
+        div
+            a(href="/issues/new")(style='background-color: #2da44e; color: #fff; padding: 12px 16px; border-radius: 5px; text-decoration: none;') New Issue
+
+    div.col-sm-11(style='margin: auto; margin-top: 20px;')
+        div(style='padding: 15px; border-radius: 10px 10px 0 0; background-color: #f6f8fa;  border: 1px solid #d0d7de; font-weight: bold; display: flex; justify-content: space-between;')
+            div(style='display: flex; align-items: center;')
+                input(type='checkbox')(style="margin-right: 15px;")
+                i.far.fa-code-commit(style="margin-right: 5px; ")
+                | 0 Open
+            div(style='display: flex;')
+                .dropdown
+                    button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')(style='background: none; border: none; color: grey;')
+                        | Label
+                    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                        a.dropdown-item(href='#') Action
+                        a.dropdown-item(href='#') Another action
+                        a.dropdown-item(href='#') Something else here
+                .dropdown
+                    button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')(style='background: none; border: none; color: grey;')
+                        | Assignee
+                    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                        a.dropdown-item(href='#') Action
+                        a.dropdown-item(href='#') Another action
+                        a.dropdown-item(href='#') Something else here
+        div(style='text-align: center; height: 300px; border: 1px solid #d0d7de; display: flex; align-items: center; justify-content: center;')
+            div(style='')
+                h3 There aren’t any open issues.
+                h6 You could search all of GitHub or try an advanced search.

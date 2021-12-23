@@ -1,0 +1,30 @@
+.nav { 
+    font-weight: 600; 
+    padding: unset !important;
+}
+
+.navSearch {
+    background-color: #24292f !important; 
+    border: 1px solid #57606a !important;  
+    color: #fff;
+}
+
+.projTitle {
+    color:#0969da; 
+    font-weight: bold; 
+    font-size: 20px;
+}
+
+.tabs {
+    margin-top: 35px;
+    margin-left: 5% !important;
+    width: fit-content; 
+    border-bottom: 3px solid #fd8c73;
+}
+
+.issueTab {
+    display: flex; 
+    align-items: baseline; 
+    gap: 0.4rem;
+    font-weight: 600;
+}
