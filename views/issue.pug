@@ -1,0 +1,89 @@
+extends layout
+
+block content
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.nav(style='background-color: #24292f !important;')
+        .container-fluid(style="padding: 12px 24px;")
+            a(class="navbar-brand" href="#") 
+                img(src='https://icon-library.com/images/github-icon-white/github-icon-white-6.jpg' style="width: 35px;")
+            div(class="collapse navbar-collapse" id="navbarNavAltMarkup")
+                div(class="navbar-nav")
+                    input#example-search-input.form-control.py-2.navSearch(type='text' placeholder='Search or jump to...')
+                    a(class="nav-link" href="#" style='color:white;') Pulls
+                    a(class="nav-link" href="#" style='color:white;') Issues 
+                    a(class="nav-link" href="#" style='color:white;') Marketplace
+                    a(class="nav-link" href="#" style='color:white;') Explore
+    div(style='background-color:#f6f8fa;')
+        div.container
+            div.row
+                div.col(style='margin-top: 20px;')
+                    a.projTitle Project_Name 
+        div.row.tabs
+            .col-sm.issueTab
+                i.far.fa-scrubber
+                p Issues
+        hr(style='margin-top: 0px;')
+
+    div.container
+        div.row
+            div
+                div(style='display: flex; letter-spacing: 0.5px; gap: 0.4rem;')
+                    h2 #{issue[0].title}
+                    h2(style='color: #57606a;') ##{issue[0].id}
+                div
+                    if issue[0].issue_status == 'open'
+                        button.btn.btn-success(style='font-weight: 600; background: #2da44e; border-radius: 20px; padding: 6px 18px;')
+                            i.far.fa-scrubber    Open
+                    else
+                        button.btn.btn-primary(style='font-weight: 600; background: #8250df; border-radius: 20px; padding: 6px 18px; border: 1px solid #8250df;')
+                            i.far.fa-check-circle    Closed
+
+        hr
+        .row 
+            if issue.length > 1
+                each comment in issue
+                    div.col-sm-2 #{comment.user_posted_by}              
+                    div.col-sm-8
+                        table.table(style='border-collapse: separate; border-spacing: 0;')
+                            thead(style='background: #ddf4ff;')
+                                tr
+                                    th(style='border: 1px solid #a6d9ff; border-radius: 5px 5px 0 0;')(scope='col') #{comment.user_posted_by}
+                            tbody
+                                tr
+                                    td(style='border: 1px solid #a6d9ff; border-radius: 0 0 5px 5px;')(scope='row') #{comment.comments}
+                    div.col-sm-2  
+            else
+                div.col-sm-2 #{issue[0].posted_by}              
+                div.col-sm-8
+                    table.table(style='border-collapse: separate; border-spacing: 0;')
+                        thead(style='background: #ddf4ff;')
+                            tr
+                                th(style='border: 1px solid #a6d9ff; border-radius: 5px 5px 0 0;')(scope='col') #{issue[0].posted_by}
+                        tbody
+                            tr
+                                td(style='border: 1px solid #a6d9ff; border-radius: 0 0 5px 5px;')(scope='row') #{issue[0].comment}
+                div.col-sm-2 
+
+            //- div.col-sm-2
+            //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Assigness
+            //-     hr
+            //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
+
+            div.col-sm-2
+            div.col-sm-8
+                form(action='/create-comment', method='POST')
+                    input(type='hidden' name='issue_id' value=`${issue[0].id}`)
+                    input#markdown-editor(type='textarea' value='' name='editor' placeholder='Leave a comment')
+                    //- button.btn.btn-light(style='margin-right: 15px; border: 1px solid #d0d7de; border-radius: 5px;')
+                    //-     i.far.fa-check-circle(style='color: #8250df; padding: 5px;')
+                    //-     |     Close Issue
+                    button.btn.btn-success(style='background-color: #2da44e;') Comment
+
+
+
+    script.
+        const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});
+        
+    style.
+        .CodeMirror-scroll {
+            min-height: 100px !important;
+        }

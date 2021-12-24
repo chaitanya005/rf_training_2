@@ -20,6 +20,25 @@ function addUser(db, newUser) {
     });
 }
 
+function addIssue(db, newIssue) {
+  console.log(newIssue)
+  return db
+    .insert(newIssue)
+    .into("issues")
+    .then(rows => {
+      return rows[0];
+    });
+}
+
+function addComment(db, newComment) {
+  console.log(newComment)
+  return db
+    .insert(newComment)
+    .into("comments")
+    .then(rows => {
+      return rows[0];
+    });
+}
 
 router.get('/', function(req, res, next) {
   res.render('login')
@@ -29,13 +48,28 @@ router.get('/login', function(req, res) {
   res.render('login')
 })
 
-router.get('/home', function(req, res, next) {
-  res.render('home');
+router.get('/home', async(req, res) => {
+  const issues = await db('issues').select('id', 'title', 'label', 'posted_by', 'issue_status').orderBy('id', 'desc')
+  res.render('home', {issues});
 });
 
 router.get('/issues/new', function(req, res, next) {
   res.render('newIssue');
 });
+
+router.get('/issues/:id', async (req, res) => {
+  const issue = await db('issues')
+  .leftJoin('comments', 'issues.id', 'comments.issue_id')
+  .select('issues.id', 'issues.title', 'issues.comment', 'issues.posted_by', 'issues.issue_status', 'comments.comment AS comments', 'comments.posted_by AS user_posted_by')
+  .where({'issues.id': req.params.id})
+
+  // const issue = await db('issues').select('id', 'title', 'comment', 'posted_by', 'issue_status')
+  
+  console.log(issue)
+
+
+  res.render('issue', {issue})
+})
 
 router.route('/login')
   .get(async function(req, res) {
@@ -67,6 +101,30 @@ router.post('/signup', async(req, res)=> {
   catch (err) {
     console.log(err);
     res.redirect('/signup');
+  }
+})
+
+
+router.post('/create-issue', async(req, res) => {
+  try {
+    console.log(req.body)
+    const { title, editor } = req.body;
+    const issue = await addIssue(db, { title, comment: editor, posted_by: req.user.username, issue_status: 'open', label: '' });
+    res.redirect('/home');
+  }
+  catch (err) {
+    console.log(err);
+  }
+})
+
+router.post('/create-comment', async(req, res) => {
+  try {
+    console.log(req.body)
+    const { issue_id, editor } = req.body;
+    const issue = await addComment(db, { comment: editor, posted_by: req.user.username, issue_id: issue_id});
+  }
+  catch (err) {
+    console.log(err);
   }
 })
 

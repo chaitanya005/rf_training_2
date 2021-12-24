@@ -1,14 +1,13 @@
 extends layout
 
 block content
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark(style="background-color: #24292f !important; font-weight: 600; padding: unset")
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.nav(style='background-color: #24292f !important;')
         .container-fluid(style="padding: 12px 24px;")
             a(class="navbar-brand" href="#") 
-                //- img(src='https://cdn-icons-png.flaticon.com/512/25/25231.png' alt='logo' style="width: 30px;")
                 img(src='https://icon-library.com/images/github-icon-white/github-icon-white-6.jpg' style="width: 35px;")
             div(class="collapse navbar-collapse" id="navbarNavAltMarkup")
                 div(class="navbar-nav")
-                    input#example-search-input.form-control.py-2(type='text' placeholder='Search or jump to...')(style='background-color: #24292f; border: 1px solid #57606a; color: #fff;')
+                    input#example-search-input.form-control.py-2.navSearch(type='text' placeholder='Search or jump to...')
                     a(class="nav-link" href="#" style='color:white;') Pulls
                     a(class="nav-link" href="#" style='color:white;') Issues 
                     a(class="nav-link" href="#" style='color:white;') Marketplace
@@ -17,33 +16,25 @@ block content
         div.container
             div.row
                 div.col(style='margin-top: 20px;')
-                    a(style='color:#0969da; font-weight: bold; font-size: 20px;') Project_Name 
-        div(style='margin-top: 35px;margin-left: 5%; width: fit-content; border-bottom: 3px solid #fd8c73;')
-            .col-sm(style='display: flex; align-items: baseline; gap: 0.4rem;')
-                i.far.fa-code-commit
-                a(href='/home')(style="font-weight: 600; color: #000; margin-bottom: 1rem;") Issues
+                    a.projTitle Project_Name 
+        div.row.tabs
+            .col-sm.issueTab
+                i.far.fa-scrubber
+                p Issues
         hr(style='margin-top: 0px;')
     
     div(style='display: flex;')
-        div.col-sm-1 Name
-        div.col-sm-9(style='border: 1px solid #d0d7de; border-radius: 5px; display: flex; flex-direction: column;')
-            input(type='text' placeholder='  Title')(style='background: #f6f8fa; margin-top: 10px; width: inherit; border-radius: 5px; height: 40px; font-size: 18px; border: 1px solid #d0d7de;')
-            input#markdown-editor(type='textarea' value='' name='editor' placeholder='Leave a comment')
-            button(style='background-color: #2da44e; color: #fff; padding: 6px 16px; border-radius: 5px; border: unset; margin-left: auto; margin-bottom: 10px;') Submit new issue
+        div.col-sm-1 
+        div.col-sm-9.newIssue
+            form(action='/create-issue', method='POST')
+                input(type='text' placeholder='  Title' name='title').issueTitle
+                input#markdown-editor(type='textarea' value='' name='editor' placeholder='Leave a comment')
+                button.btn.btn-success.btnSubmit Submit new issue
 
-        div.col-sm-2
-            p Assigness
-            p Labels
+        //- div.col-sm-2
+        //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Assigness
+        //-     hr
+        //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
 
     script.
         const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});
-        console.log(easyMDE)
-        //- easyMDE.value('Helo!')
-    style.
-        .EasyMDEContainer {
-          margin-top: 20px;
-        }
-
-        .CodeMirror {
-          background-color: #f6f8fa;
-        }
