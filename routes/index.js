@@ -40,6 +40,16 @@ function addComment(db, newComment) {
     });
 }
 
+function addLabel(db, newLabel) {
+  console.log(newLabel)
+  return db
+    .insert(newLabel)
+    .into("labels")
+    .then(rows => {
+      return rows[0];
+    });
+}
+
 router.get('/', function(req, res, next) {
   res.render('login')
 });
@@ -49,12 +59,17 @@ router.get('/login', function(req, res) {
 })
 
 router.get('/home', async(req, res) => {
-  const issues = await db('issues').select('id', 'title', 'label', 'posted_by', 'issue_status').orderBy('id', 'desc')
+  // const issues = await db('issues').select('id', 'title', 'label_id', 'posted_by', 'issue_status').orderBy('id', 'desc')
+  const issues = await db('issues')
+  .leftJoin('labels', 'issues.label_id', 'labels.id')
+  .select('issues.id', 'issues.title', 'issues.comment', 'issues.posted_by', 'issues.issue_status', 'labels.name as label', 'labels.color_code as bgColor')
+  // console.log(issues)
   res.render('home', {issues});
 });
 
-router.get('/issues/new', function(req, res, next) {
-  res.render('newIssue');
+router.get('/issues/new', async(req, res) => {
+  const labels = await db('labels').select('id', 'name', 'description', 'color_code')
+  res.render('newIssue', {labels});
 });
 
 router.get('/issues/:id', async (req, res) => {
@@ -69,6 +84,12 @@ router.get('/issues/:id', async (req, res) => {
 
 
   res.render('issue', {issue})
+})
+
+router.get('/labels', async(req, res) => {
+  const labels = await db('labels').select('id', 'name', 'description', 'color_code')
+  // console.log(labels)
+  res.render('labels', {labels})
 })
 
 router.route('/login')
@@ -108,8 +129,14 @@ router.post('/signup', async(req, res)=> {
 router.post('/create-issue', async(req, res) => {
   try {
     console.log(req.body)
-    const { title, editor } = req.body;
-    const issue = await addIssue(db, { title, comment: editor, posted_by: req.user.username, issue_status: 'open', label: '' });
+    const { title, editor, label } = req.body;
+    const issue = await addIssue(db, { title, comment: editor, posted_by: req.user.username, issue_status: 'open', label_id: label })
+    
+    // addIssue(db, { title, posted_by: 'First user', issue_status: 'open', label_id: label })
+    // .then(res => {
+    //   addComment(db, { comment: editor, posted_by: 'First user', issue_id: res});
+    // })
+    // await addComment(db, { comment: editor, posted_by: req.user.username, issue_id: issue_id});
     res.redirect('/home');
   }
   catch (err) {
@@ -121,7 +148,23 @@ router.post('/create-comment', async(req, res) => {
   try {
     console.log(req.body)
     const { issue_id, editor } = req.body;
-    const issue = await addComment(db, { comment: editor, posted_by: req.user.username, issue_id: issue_id});
+    const issue = await addComment(db, { comment: editor, posted_by: req.user.username, issue_id: issue_id, label_id: 0});
+    res.redirect('/home')
+  }
+  catch (err) {
+    console.log(err);
+  }
+})
+
+
+
+router.post('/create-label', async(req, res) => {
+  console.log(req.body)
+  try {
+    console.log(req.body)
+    const { label_name, description, color_code } = req.body;
+    const issue = await addLabel(db, { name: label_name, description, color_code});
+    res.redirect('/labels')
   }
   catch (err) {
     console.log(err);

@@ -23,18 +23,25 @@ block content
                 p Issues
         hr(style='margin-top: 0px;')
     
-    div(style='display: flex;')
-        div.col-sm-1 
-        div.col-sm-9.newIssue
-            form(action='/create-issue', method='POST')
-                input(type='text' placeholder='  Title' name='title').issueTitle
-                input#markdown-editor(type='textarea' value='' name='editor' placeholder='Leave a comment')
-                button.btn.btn-success.btnSubmit Submit new issue
+    div
+        form(action='/create-issue', method='POST')(style='display: flex;')
+            div.col-sm-1 
+            div.col-sm-9.newIssue
+                    input(type='text' placeholder='  Title' name='title').issueTitle
+                    input#markdown-editor(type='textarea' value='' name='editor' placeholder='Leave a comment')
+                    button.btn.btn-success.btnSubmit Submit new issue
 
-        //- div.col-sm-2
-        //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Assigness
-        //-     hr
-        //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
-
+            div.col-sm-2
+                //- .dropdown
+                //- button#dropdownMenuButton(type='button' data-toggle='dropdown' name='label')(style='all: unset; color: #57606a; font-weight: 600; font-size: 14px; ') Labels
+                    //- .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                        a.dropdown-item(href='#') Action
+                        a.dropdown-item(href='#') Another action
+                        a.dropdown-item(href='#') Something else here
+                select.form-select(aria-label='Default select example')(style='all: unset; color: #57606a; font-weight: 600; font-size: 14px; ')(name='label')
+                    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                        option(value=0) Labels
+                    each label in labels
+                        option(value=`${label.id}`) #{label.name}
     script.
         const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});

@@ -27,7 +27,7 @@ block content
             input(type='text' placeholder='Search').filterSearch
         div
             div
-                button.p-2.btn.btn-light.filterBtns
+                a(href="/labels").p-2.btn.btn-light.filterBtns
                     i.fas.fa-tag.icons
                     | Labels 0
                 button.p-2.btn.btn-light.btnMilestone Milestones 0
@@ -64,7 +64,9 @@ block content
                         input(type='checkbox')(style="margin: 15px;")
                         i.far.fa-scrubber.icons(style='color: green; font-size: 20px; margin-right: 10px;')
                     div
-                        a(href=`/issues/${issue.id}`)(style='font-weight: 600; font-size: 20px; text-decoration: none; color: #000;') #{issue.title}
+                        div(style='display: flex; gap: 0.2rem; align-items: baseline;')
+                            a(href=`/issues/${issue.id}`)(style='font-weight: 600; font-size: 20px; text-decoration: none; color: #000;') #{issue.title} 
+                            p(style=`background: ${issue.bgColor}; color: #fff;  padding: 2px 8px; border-radius: 10px;  font-size: 12px; margin: 0;`) #{issue.label}
                         p(style='margin: auto; color: #57606a; font-weight: normal;') ##{issue.id}
 
             else 

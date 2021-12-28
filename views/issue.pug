@@ -39,8 +39,18 @@ block content
 
         hr
         .row 
-            if issue.length > 1
-                each comment in issue
+            div.col-sm-2 #{issue[0].posted_by}              
+            div.col-sm-8
+                table.table(style='border-collapse: separate; border-spacing: 0;')
+                    thead(style='background: #ddf4ff;')
+                        tr
+                            th(style='border: 1px solid #a6d9ff; border-radius: 5px 5px 0 0;')(scope='col') #{issue[0].posted_by}
+                    tbody
+                        tr
+                            td(style='border: 1px solid #a6d9ff; border-radius: 0 0 5px 5px;')(scope='row') #{issue[0].comment}
+            div.col-sm-2 
+            each comment in issue
+                if comment.user_posted_by !== null
                     div.col-sm-2 #{comment.user_posted_by}              
                     div.col-sm-8
                         table.table(style='border-collapse: separate; border-spacing: 0;')
@@ -51,22 +61,10 @@ block content
                                 tr
                                     td(style='border: 1px solid #a6d9ff; border-radius: 0 0 5px 5px;')(scope='row') #{comment.comments}
                     div.col-sm-2  
-            else
-                div.col-sm-2 #{issue[0].posted_by}              
-                div.col-sm-8
-                    table.table(style='border-collapse: separate; border-spacing: 0;')
-                        thead(style='background: #ddf4ff;')
-                            tr
-                                th(style='border: 1px solid #a6d9ff; border-radius: 5px 5px 0 0;')(scope='col') #{issue[0].posted_by}
-                        tbody
-                            tr
-                                td(style='border: 1px solid #a6d9ff; border-radius: 0 0 5px 5px;')(scope='row') #{issue[0].comment}
-                div.col-sm-2 
-
             //- div.col-sm-2
-            //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Assigness
-            //-     hr
-            //-     p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
+            //- p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
+            //- hr
+            //- p(style='color: #57606a; font-weight: 600; font-size: 14px;') Labels
 
             div.col-sm-2
             div.col-sm-8
@@ -82,7 +80,7 @@ block content
 
     script.
         const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});
-        
+
     style.
         .CodeMirror-scroll {
             min-height: 100px !important;
