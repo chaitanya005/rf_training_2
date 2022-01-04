@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 function intialize(passport) {
     const authenticateUser =  (email, password, done) => {
-        console.log(email)
+        // console.log(email)
         db('users').where('email', email).first().then( function (user) {
             if (user == null) {
                 return done(null, false, { message: 'No user with that email' });

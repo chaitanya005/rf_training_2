@@ -12,6 +12,8 @@ block content
                     a(class="nav-link" href="#" style='color:white;') Issues 
                     a(class="nav-link" href="#" style='color:white;') Marketplace
                     a(class="nav-link" href="#" style='color:white;') Explore
+            div
+                a(href='/logout')(style='text-decoration: none; color: #fff; padding: 10px 10px; border: 1px solid #fff; border-radius: 5px;') Logout
     div(style='background-color:#f6f8fa;')
         div.container
             div.row
@@ -20,7 +22,8 @@ block content
         div.row.tabs
             .col-sm.issueTab
                 i.far.fa-scrubber
-                p Issues
+                p 
+                    a(href="/home")(style='text-decoration: none; color: #000;')  Issues
         hr(style='margin-top: 0px;')
     
     div
@@ -42,6 +45,13 @@ block content
                     .dropdown-menu(aria-labelledby='dropdownMenuButton')
                         option(value=0) Labels
                     each label in labels
-                        option(value=`${label.id}`) #{label.name}
+                        option(value=`${label.id}`)  #{label.name}
+                hr
+                select#label.form-select(aria-label='Default select example')(style='all: unset; color: #57606a; font-weight: 600; font-size: 14px; ')(name='assignee')
+                    .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                        option(value=0) Assignees
+                    each user in users
+                        option(value=`${user.id}`) #{user.username}
+
     script.
         const easyMDE = new EasyMDE({element: document.getElementById('markdown-editor')});

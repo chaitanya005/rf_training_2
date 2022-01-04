@@ -4,7 +4,8 @@ exports.up = function(knex) {
         table.increments('id').primary();
         table.string('name', 255).notNullable();
        table.string('description', 255).notNullable();
-       table.string('color_code', 255).notNullable();
+       table.string('bg_color', 255).notNullable();
+       table.string('font_color', 255).notNullable();
     })
 };
 

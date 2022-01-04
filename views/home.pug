@@ -12,6 +12,8 @@ block content
                     a(class="nav-link" href="#" style='color:white;') Issues 
                     a(class="nav-link" href="#" style='color:white;') Marketplace
                     a(class="nav-link" href="#" style='color:white;') Explore
+            div
+                a(href='/logout')(style='text-decoration: none; color: #fff; padding: 10px 10px; border: 1px solid #fff; border-radius: 5px;') Logout
     div(style='background-color:#f6f8fa;')
         div.container
             div.row
@@ -34,41 +36,70 @@ block content
         div
             a(href="/issues/new").btn.btn-success.issueBtn New Issue
 
+    if filterdIssues
+        a(href='/home').col-sm-11.flex(style='margin-left: 4%; margin-top: 0.5%; gap: 0.5rem; align-items: baseline; text-decoration: none; color: #000;')
+            i.fas.fa-window-close
+            h5 Clear Filters
     div.col-sm-11(style='margin: auto; margin-top: 20px;')
         div.boxHead
             div(style='display: flex; align-items: center;')
-                input(type='checkbox')(style="margin-right: 15px;")
-                i.far.fa-scrubber.icons
-                | #{issues.length} Open
+                //- input(type='checkbox')(style="margin-right: 15px;")
+                if issues
+                    i.far.fa-scrubber.icons
+                    | #{issues.length} Open
+                else
+                    i.far.fa-scrubber.icons
+                    | #{filterdIssues.length} Open
             div(style='display: flex;')
                 .dropdown
                     button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')(style='background: none; border: none; color: grey;')
                         | Label
                     .dropdown-menu(aria-labelledby='dropdownMenuButton')
-                        a.dropdown-item(href='#') Action
-                        a.dropdown-item(href='#') Another action
-                        a.dropdown-item(href='#') Something else here
+                        each label in labels
+                            a(href=`/home/search?label_id=${label.id}`).dropdown-item(style='display: flex; gap: 0.3rem;')
+                                div(style=`width: 20px; background: ${label.bg_color}; height: 20px; border-radius: 50%;`)
+                                div #{label.name}
+
                 .dropdown
                     button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')(style='background: none; border: none; color: grey;')
                         | Assignee
                     .dropdown-menu(aria-labelledby='dropdownMenuButton')
-                        a.dropdown-item(href='#') Action
-                        a.dropdown-item(href='#') Another action
-                        a.dropdown-item(href='#') Something else here
+                        each user in users
+                            a(href=`/home/search?assignee_id=${user.id}`).dropdown-item(style='display: flex; gap: 0.3rem;')
+                                div #{user.username}
+
+                        
 
         div.boxHead(style='display: flex; flex-direction: column; background: #fff; border-radius: 0 0 5px 5px; padding: 0; border: 0.2px solid #d0d7de;')
-            if issues.length > 0 
-            each issue in issues 
-                div(style='display: flex; align-items: baseline; padding: 5px; border-top: 1px solid #d0d7de; ')
-                    div
-                        input(type='checkbox')(style="margin: 15px;")
-                        i.far.fa-scrubber.icons(style='color: green; font-size: 20px; margin-right: 10px;')
-                    div
-                        div(style='display: flex; gap: 0.2rem; align-items: baseline;')
-                            a(href=`/issues/${issue.id}`)(style='font-weight: 600; font-size: 20px; text-decoration: none; color: #000;') #{issue.title} 
-                            p(style=`background: ${issue.bgColor}; color: #fff;  padding: 2px 8px; border-radius: 10px;  font-size: 12px; margin: 0;`) #{issue.label}
-                        p(style='margin: auto; color: #57606a; font-weight: normal;') ##{issue.id}
-
+            if issues
+                if issues.length > 0 
+                each issue in issues 
+                    div(style='display: flex; align-items: baseline; padding: 5px; border-top: 1px solid #d0d7de; ')
+                        div
+                            input(type='checkbox')(style="margin: 15px;")
+                            i.far.fa-scrubber.icons(style='color: green; font-size: 20px; margin-right: 10px;')
+                        div
+                            div(style='display: flex; justify-content: space-between; gap: 0.2rem; align-items: baseline;')
+                                a(href=`/issues/${issue.id}`)(style='font-weight: 600; font-size: 20px; text-decoration: none; color: #000;') #{issue.title} 
+                                p(style=`background: ${issue.bgColor}; color: ${issue.fontColor};  padding: 2px 8px; border-radius: 10px;  font-size: 12px; margin: 0;`) #{issue.label}
+                                div #{issue.assignee}
+                            p(style='margin: auto; color: #57606a; font-weight: normal;') ##{issue.id}
+                else 
+                    div.boxBody
+                        h3 There aren’t any open issues.
             else 
-                div.boxBody
-                    h3 There aren’t any open issues.
+                if filterdIssues.length > 0
+                each issue in filterdIssues 
+                    div(style='display: flex; align-items: baseline; padding: 5px; border-top: 1px solid #d0d7de; ')
+                        div
+                            input(type='checkbox')(style="margin: 15px;")
+                            i.far.fa-scrubber.icons(style='color: green; font-size: 20px; margin-right: 10px;')
+                        div
+                            div(style='display: flex; justify-content: space-between; gap: 0.2rem; align-items: baseline;')
+                                a(href=`/issues/${issue.id}`)(style='font-weight: 600; font-size: 20px; text-decoration: none; color: #000;') #{issue.title} 
+                                p(style=`background: ${issue.bgColor}; color: ${issue.fontColor};  padding: 2px 8px; border-radius: 10px;  font-size: 12px; margin: 0;`) #{issue.label}
+                                div #{issue.assignee}
+                            p(style='margin: auto; color: #57606a; font-weight: normal;') ##{issue.id}
+                else
+                    div.boxBody
+                        h3 No results matched your search..
